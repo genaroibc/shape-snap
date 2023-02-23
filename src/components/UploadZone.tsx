@@ -1,49 +1,55 @@
 import { useState } from 'react';
+import { readImageFile } from '../utils/readImageFile';
+import axios from 'axios';
 
 export function UploadZone() {
-  const [uploadedImg, setUploadedImg] = useState<{ src: string; title: string } | null>(null);
+  const [userImg, setUserImg] = useState<{ src: string; title: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [transformedImgUrl, setTransformedImgUrl] = useState('');
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleReadFiles = (file: File) => {
-    if (file.type.split('/')[0] !== 'image') {
-      return setError('Please upload an image file.\nSupported formats: png, jpg, jpeg, webp, gif, and svg');
+  const uploadImageFile = async (imageData: File) => {
+    const API_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_API_URL;
+
+    if (!API_URL) {
+      throw new Error("'VITE_CLOUDINARY_UPLOAD_API_URL' env variable is not defined");
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const data = new FormData();
 
-    reader.onerror = () => setError('There was an error reading your file, please try again.');
+    data.append('file', imageData);
+    data.append('upload_preset', 'shape-snap'); // set up your upload_preset on cloudinary.
 
-    reader.onload = () => {
-      setError(null);
-
-      const imgUrl = reader.result;
-
-      if (typeof imgUrl === 'string') {
-        setUploadedImg({ src: imgUrl, title: file.name });
-        return;
-      }
-
-      if (imgUrl instanceof ArrayBuffer) {
-        setUploadedImg({ src: URL.createObjectURL(new Blob([imgUrl])), title: file.name });
-        return;
-      }
-
-      setError('There was an error uploading the image, please try again.');
-    };
+    try {
+      const res = await axios.post(API_URL, data, {
+        onUploadProgress: (event) => {
+          console.log((event.loaded / (event.total ?? 0)) * 100);
+        }
+      });
+      setTransformedImgUrl(res.data.secure_url);
+      return res.data.secure_url;
+    } catch (error) {
+      return console.error(error);
+    }
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
+
     setIsDragging(false);
+    setUserImg(null);
+
     const draggedData = event.dataTransfer;
-    const files = draggedData.files;
-    // imageDisplay.innerHTML = "";
-    Array.from(files).forEach((file) => {
-      handleReadFiles(file);
+    const imageFiles = draggedData.files;
+
+    Array.from(imageFiles).forEach((imageFile) => {
+      readImageFile(imageFile).then((result) => {
+        if (!result.ok) return setError(result.error);
+
+        setUserImg(result.data);
+        uploadImageFile(imageFile);
+      });
     });
   };
 
@@ -55,17 +61,17 @@ export function UploadZone() {
   };
 
   return (
-    <form className="my-8 p-4 flex flex-col gap-4" action="https://api.cloudinary.com/v1_1/duqlgh2vs">
+    <section className="p-4 flex flex-col gap-4 shadow-2xl">
       <section
         draggable
         onDrop={handleDrop}
-        onDragEnter={(event) => handleToggleDragging({ event, isDragging: false })}
-        onDragOver={(event) => handleToggleDragging({ event, isDragging: false })}
-        onDragLeave={(event) => handleToggleDragging({ event, isDragging: true })}
+        onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
+        onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
+        onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
         className={`grid place-content-center w-80 h-80 max-w-xl my-4
-          mx-auto bg-secondary border-black border-dashed border-4 rounded-3xl
+          mx-auto border-black border-dashed border-4 rounded-3xl
           transition-scale duration-200
-          ${isDragging ? 'bg-green-500 scale-125' : 'bg-blue-500'}`}
+          ${isDragging ? 'bg-green-500 scale-125' : 'bg-transparent'}`}
       >
         <p>upload your image here</p>
         <img src="/assets/svg/drop.svg" alt="drop here" />
@@ -79,14 +85,17 @@ export function UploadZone() {
         {error ? (
           <p>{error}</p>
         ) : (
-          uploadedImg?.src && (
+          userImg?.src && (
             <>
-              <img className="border-green-500 border-4 rounded-md" src={uploadedImg.src} alt={uploadedImg.title} />
-              <h6>{uploadedImg.title}</h6>
+              <img className="border-green-500 border-4 rounded-md" src={userImg.src} alt={userImg.title} />
+              <h6>{userImg.title}</h6>
             </>
           )
         )}
+        {transformedImgUrl && (
+          <img className="border-green-500 border-4 rounded-md" src={transformedImgUrl} alt={'a cat'} />
+        )}{' '}
       </div>
-    </form>
+    </section>
   );
 }
