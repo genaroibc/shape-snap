@@ -1,8 +1,8 @@
 const PLATFORM_LIST = [
-  { name: 'twitch', iconSrc: '/assets/svg/twitch.svg' },
-  { name: 'youtube', iconSrc: '/assets/svg/youtube.svg' },
-  { name: 'tiktok', iconSrc: '/assets/svg/tiktok.svg' },
-  { name: 'twitter', iconSrc: '/assets/svg/twitter.svg' }
+  { name: 'twitch', iconSrc: '/assets/svg/brands/twitch.svg' },
+  { name: 'youtube', iconSrc: '/assets/svg/brands/youtube.svg' },
+  { name: 'tiktok', iconSrc: '/assets/svg/brands/tiktok.svg' },
+  { name: 'twitter', iconSrc: '/assets/svg/brands/twitter.svg' }
 ];
 
 type Props = {
@@ -17,17 +17,17 @@ export function PlatformList({ onSelectionChange }: Props) {
           <li title={name} key={name}>
             <input
               onChange={onSelectionChange}
-              className="hidden [&:checked+label]:bg-blue-300"
+              className="hidden [&:checked+label]:bg-white [&:checked+label]:shadow-2xl [&:checked+label_img]:brightness-100"
               type="checkbox"
               name={name}
               id={name}
             />
             <label
-              className="shadow-xl rounded-3xl w-48 h-48 grid place-content-center p-4 gap-4 group transition-colors"
+              className="shadow-lg text-center bg-gray-100 rounded-3xl w-48 h-48 grid place-content-center p-4 gap-4 group transition-colors"
               htmlFor={name}
             >
               <img
-                className="transition-filter duration-150 brightness-0 group-hover:brightness-100"
+                className="w-2/6 mx-auto aspect-square transition-filter duration-150 brightness-0 group-hover:brightness-100"
                 src={iconSrc}
                 alt={name}
               />
