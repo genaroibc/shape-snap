@@ -1,8 +1,13 @@
+import { Header } from './components/Header';
+import { Hero } from './components/Hero';
+import { UploadZone } from './components/UploadZone';
+
 function App() {
   return (
     <>
-      <h1>Shape Snap</h1>
-      <h2>One tool, all social media platforms</h2>
+      <Header />
+      <Hero />
+      <UploadZone />
     </>
   );
 }
