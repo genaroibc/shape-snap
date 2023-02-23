@@ -3,13 +3,21 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary-color: #eeeeee;
+  --primary-color-darker: #01a1dc;
+  --secondary-color: #fff1dc;
+  --tertiary-color: #cf2b44;
+  --tertiary-color-darken: #b31028;
+  --complement-color: #003a4f;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 500;
+  font-size: 16px;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #111;
+  background-color: var(--primary-color);
+  /* color-scheme: dark; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,58 +26,60 @@
   -webkit-text-size-adjust: 100%;
 }
 
+body {
+  margin: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+p {
+  margin: 1rem auto;
+  font-weight: 500;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #ccc;
   text-decoration: inherit;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  text-decoration: underline;
+  color: #fff;
 }
 
 h1 {
   font-size: 3.2em;
+  margin: 1rem auto;
   line-height: 1.1;
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.6rem 1.2rem;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  color: #f9f9f9;
-  background-color: #1a1a1a;
+  color: #f6f6f6;
+  background-color: var(--tertiary-color-darken) !important;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.2s ease;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: var(--tertiary-color) !important;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+@media screen and (max-width: 768px) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+    font-size: 12px;
   }
 }
