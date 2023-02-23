@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { PlatformList } from './PlatformList';
 import { UploadZone } from './UploadZone';
 import type { ImageData } from '../types';
-import { STEP_LIST, TOTAL_STEPS } from '../constants';
+import { STEP_LIST } from '../constants';
 import { StepsBreadCrumb } from './StepsBreadCrumb';
+import { StepsNavBar } from './StepsNavBar';
 
 export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -42,13 +43,7 @@ export function Steps() {
           ))}
         </div>
       )}
-
-      {currentStep > 0 && <button onClick={() => setCurrentStep((p) => (p > 1 ? p - 1 : 0))}>prev</button>}
-      {currentStep < TOTAL_STEPS && (
-        <button onClick={() => setCurrentStep((p) => (p === TOTAL_STEPS ? TOTAL_STEPS : p + 1))}>next</button>
-      )}
-
-      <button disabled={currentStep !== TOTAL_STEPS}>Generate images</button>
+      <StepsNavBar currentStep={currentStep} setCurrentStep={setCurrentStep} />
     </section>
   );
 }
