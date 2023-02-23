@@ -44,28 +44,27 @@ export function UploadZone({ onUserImage: onUserImage }: Props) {
   };
 
   return (
-    <section className="p-4 flex gap-4 shadow-2xl">
+    <section className="p-12 flex items-center gap-4 shadow-2xl">
       <section
         draggable
         onDrop={handleDrop}
         onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
         onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
         onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
-        className={`grid place-content-center w-80 h-80 max-w-xl my-4
-          mx-auto border-black border-dashed border-4 rounded-3xl
+        className={`grid hover:cursor-pointer place-content-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl
           transition-scale duration-200
           ${isDragging ? 'bg-green-500 scale-125' : 'bg-transparent'}`}
       >
-        <p>upload your image here</p>
+        <p>drop your images here</p>
       </section>
 
-      <div className="max-w-xs w-full mx-auto text-center flex flex-col gap-4">
+      <div className="max-w-xs w-full mx-auto text-center flex flex-col justify-center gap-4">
         {error ? (
           <p>{error}</p>
         ) : (
           userImg?.src && (
             <>
-              <img className="border-green-500 border-4 rounded-md" src={userImg.src} alt={userImg.title} />
+              <img className="border-4 rounded-md" src={userImg.src} alt={userImg.title} />
               <h6>{userImg.title}</h6>
             </>
           )
