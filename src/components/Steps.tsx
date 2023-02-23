@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { PlatformList } from './PlatformList';
 import { UploadZone } from './UploadZone';
 import type { ImageData } from '../types';
-
-const STEPS_TITLES = ['Upload your images', 'Select social media platforms', 'Confirm your choices'];
-const TOTAL_STEPS = STEPS_TITLES.length;
+import { STEP_LIST, TOTAL_STEPS } from '../constants';
+import { StepsBreadCrumb } from './StepsBreadCrumb';
 
 export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,19 +26,8 @@ export function Steps() {
 
   return (
     <section id="playground" className="max-w-7xl flex flex-col gap-4 mx-auto min-h-screen py-12">
-      <nav className="flex gap-6 text-xl">
-        {STEPS_TITLES.map((stepTitle, index) => (
-          <span
-            className={`after:content-['>'] relative after:absolute
-              after:-right-4 last-of-type:after:content-[''] ${currentStep === index ? 'underline' : ''}`}
-            key={index}
-          >
-            {stepTitle}
-          </span>
-        ))}
-      </nav>
-      <progress value={currentStep} max={TOTAL_STEPS - 1} className="w-full" />
-      <h3 className="text-4xl my-8">{STEPS_TITLES[currentStep]}</h3>
+      <StepsBreadCrumb currentStep={currentStep} />
+      <h3 className="text-4xl my-8">{STEP_LIST[currentStep]}</h3>
       {currentStep === 0 && <UploadZone onUserImage={handleUserImage} />}
       {currentStep === 1 && <PlatformList onSelectionChange={handleSelectionChange} />}
       {currentStep === 2 && (
