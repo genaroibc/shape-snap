@@ -21,28 +21,36 @@ export function Steps() {
     setSelectedPlatforms((currentPlatforms) => ({ ...currentPlatforms, [platformName]: isSelectedPlatform }));
   };
 
-  const handleUserImage = (imageData: ImageData) => {
+  const handleNewUserImageData = (imageData: ImageData) => {
     setUserImgData(imageData);
   };
 
   return (
-    <section id="playground" className="max-w-7xl flex flex-col gap-4 mx-auto min-h-screen py-12">
+    <section id="playground" className="max-w-7xl grid place-content-center gap-4 mx-auto min-h-screen py-12">
       <StepsBreadCrumb currentStep={currentStep} />
       <h3 className="text-4xl my-8">{STEP_LIST[currentStep]}</h3>
-      {currentStep === 0 && <UploadZone onUserImage={handleUserImage} />}
-      {currentStep === 1 && <PlatformList onSelectionChange={handleSelectionChange} />}
-      {currentStep === 2 && (
-        <div className="max-w-xs w-full mx-auto text-center flex flex-col gap-4">
-          {userImgData && (
-            <img className="border-green-500 border-4 rounded-md" src={userImgData.src} alt={userImgData.title} />
-          )}
-          {Object.entries(selectedPlatforms).map(([name, isSelected]) => (
-            <span className="font-bold" key={name}>
-              {isSelected && name}
-            </span>
-          ))}
-        </div>
-      )}
+      <div className="min-h-[450px]">
+        {currentStep === 0 && <UploadZone defaultImgData={userImgData} onNewImgData={handleNewUserImageData} />}
+        {currentStep === 1 && (
+          <PlatformList
+            selectedPlatforms={Object.keys(selectedPlatforms).filter(([, isSelected]) => isSelected)}
+            onSelectionChange={handleSelectionChange}
+          />
+        )}
+        {currentStep === 2 && (
+          <div className="max-w-xs w-full mx-auto text-center flex flex-col gap-4">
+            {userImgData && (
+              <img className="w-48 mx-auto border-4 rounded-md" src={userImgData.src} alt={userImgData.title} />
+            )}
+            {Object.entries(selectedPlatforms).map(([name, isSelected]) => (
+              <span className="font-bold" key={name}>
+                {isSelected && name}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
       <StepsNavBar currentStep={currentStep} setCurrentStep={setCurrentStep} />
     </section>
   );

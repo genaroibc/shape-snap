@@ -3,26 +3,28 @@ import { readImageFile } from '../utils/readImageFile';
 import type { ImageData } from '../types';
 
 type Props = {
-  onUserImage: (imageData: ImageData) => void;
+  onNewImgData: (imageData: ImageData) => void;
+  defaultImgData: ImageData | null;
 };
 
-export function UploadZone({ onUserImage: onUserImage }: Props) {
-  const [userImg, setUserImg] = useState<ImageData | null>(null);
+export function UploadZone({ defaultImgData, onNewImgData }: Props) {
+  const [imgData, setImgData] = useState<ImageData | null>(defaultImgData);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    if (userImg?.src && userImg.title) {
-      onUserImage({ src: userImg?.src, title: userImg?.title });
+    if (imgData?.src && imgData.title) {
+      onNewImgData({ src: imgData?.src, title: imgData?.title });
     }
-  }, [userImg]);
+  }, [imgData]);
 
+  console.log('render upload zone');
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
     setIsDragging(false);
-    setUserImg(null);
+    setImgData(null);
 
     const draggedData = event.dataTransfer;
     const imageFiles = draggedData.files;
@@ -31,7 +33,7 @@ export function UploadZone({ onUserImage: onUserImage }: Props) {
       readImageFile(imageFile).then((result) => {
         if (!result.ok) return setError(result.error);
 
-        setUserImg(result.data);
+        setImgData(result.data);
       });
     });
   };
@@ -62,10 +64,10 @@ export function UploadZone({ onUserImage: onUserImage }: Props) {
         {error ? (
           <p>{error}</p>
         ) : (
-          userImg?.src && (
+          imgData?.src && (
             <>
-              <img className="border-4 rounded-md" src={userImg.src} alt={userImg.title} />
-              <h6>{userImg.title}</h6>
+              <img className="border-4 rounded-md" src={imgData.src} alt={imgData.title} />
+              <h6>{imgData.title}</h6>
             </>
           )
         )}
