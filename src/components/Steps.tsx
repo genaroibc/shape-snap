@@ -33,7 +33,9 @@ export function Steps() {
         {currentStep === 0 && <UploadZone defaultImgData={userImgData} onNewImgData={handleNewUserImageData} />}
         {currentStep === 1 && (
           <PlatformList
-            selectedPlatforms={Object.keys(selectedPlatforms).filter(([, isSelected]) => isSelected)}
+            selectedPlatforms={Object.entries(selectedPlatforms)
+              .filter(([, isSelected]) => isSelected)
+              .map(([platformName]) => platformName)}
             onSelectionChange={handleSelectionChange}
           />
         )}

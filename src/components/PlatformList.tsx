@@ -1,4 +1,6 @@
-const PLATFORM_LIST = [
+type PlatformItem = { name: string; iconSrc: string };
+
+const PLATFORM_LIST: PlatformItem[] = [
   { name: 'twitch', iconSrc: '/assets/svg/brands/twitch.svg' },
   { name: 'youtube', iconSrc: '/assets/svg/brands/youtube.svg' },
   { name: 'tiktok', iconSrc: '/assets/svg/brands/tiktok.svg' },
@@ -7,9 +9,10 @@ const PLATFORM_LIST = [
 
 type Props = {
   onSelectionChange: (e: React.ChangeEvent) => void;
+  selectedPlatforms: string[];
 };
 
-export function PlatformList({ onSelectionChange }: Props) {
+export function PlatformList({ onSelectionChange, selectedPlatforms }: Props) {
   return (
     <section>
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 place-content-center mx-auto">
@@ -21,6 +24,7 @@ export function PlatformList({ onSelectionChange }: Props) {
               type="checkbox"
               name={name}
               id={name}
+              defaultChecked={selectedPlatforms.includes(name)}
             />
             <label
               className="shadow-lg text-center bg-gray-100 rounded-3xl w-48 h-48 grid place-content-center p-4 gap-4 group transition-colors"
