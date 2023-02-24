@@ -17,13 +17,26 @@
 
   color: #111;
   background-color: var(--primary-color);
-  /* color-scheme: dark; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+progress {
+  background-color: #09f3;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #09f3;
+}
+progress::-webkit-progress-value {
+  background-color: #09f;
+}
+progress::-moz-progress-bar {
+  background-color: #09f;
 }
 
 body {
@@ -64,18 +77,23 @@ button {
   font-weight: 500;
   font-family: inherit;
   color: #f6f6f6;
-  background-color: var(--tertiary-color-darken) !important;
+  background-color: #09f !important;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, filter 0.2s ease;
 }
 
-button:hover {
-  background-color: var(--tertiary-color) !important;
+button:not(:disabled):hover {
+  background-color: rgb(0, 125, 209) !important;
 }
 
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.5);
 }
 
 @media screen and (max-width: 768px) {
