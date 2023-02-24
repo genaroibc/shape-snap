@@ -5,6 +5,7 @@ import type { ImageData } from '../types';
 import { STEP_LIST } from '../constants';
 import { StepsBreadCrumb } from './StepsBreadCrumb';
 import { StepsNavBar } from './StepsNavBar';
+import { TransformImage } from './TransformImage';
 
 export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -40,16 +41,32 @@ export function Steps() {
           />
         )}
         {currentStep === 2 && (
-          <div className="max-w-xs w-full mx-auto text-center flex flex-col gap-4">
-            {userImgData && (
+          <div className="w-full mx-auto text-center flex flex-col gap-4">
+            {userImgData ? (
               <img className="w-48 mx-auto border-4 rounded-md" src={userImgData.src} alt={userImgData.title} />
+            ) : (
+              <p className="text-red-500 text-2xl">No image provided, please upload one</p>
             )}
-            {Object.entries(selectedPlatforms).map(([name, isSelected]) => (
-              <span className="font-bold" key={name}>
-                {isSelected && name}
-              </span>
-            ))}
+            {Object.entries(selectedPlatforms)
+              .filter(([, isSelected]) => isSelected)
+              .map(([name]) => (
+                <span className="font-bold" key={name}>
+                  {name}
+                </span>
+              ))}
           </div>
+        )}
+        {currentStep === 3 && (
+          <>
+            {userImgData && (
+              <TransformImage
+                platformList={Object.entries(selectedPlatforms)
+                  .filter(([, isSelected]) => isSelected)
+                  .map(([platformName]) => platformName)}
+                imageData={userImgData}
+              />
+            )}
+          </>
         )}
       </div>
 

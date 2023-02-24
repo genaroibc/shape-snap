@@ -1,13 +1,13 @@
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { UploadZone } from './components/UploadZone';
+import { Steps } from './components/Steps';
 
 function App() {
   return (
     <>
       <Header />
       <Hero />
-      <UploadZone />
+      <Steps />
     </>
   );
 }
