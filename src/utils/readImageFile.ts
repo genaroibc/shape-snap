@@ -29,23 +29,23 @@ export async function readImageFile(imageFile: File): Promise<KnownResponse> {
     };
 
     reader.onloadend = () => {
-      const imgUrl = reader.result;
+      const imgURL = reader.result;
 
-      if (typeof imgUrl === 'string') {
+      if (typeof imgURL === 'string') {
         resolve({
           ok: true,
           data: {
-            src: imgUrl,
+            src: imgURL,
             title: imageFile.name
           }
         });
       }
 
-      if (imgUrl instanceof ArrayBuffer) {
+      if (imgURL instanceof ArrayBuffer) {
         resolve({
           ok: true,
           data: {
-            src: URL.createObjectURL(new Blob([imgUrl])),
+            src: URL.createObjectURL(new Blob([imgURL])),
             title: imageFile.name
           }
         });
