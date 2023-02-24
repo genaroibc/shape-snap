@@ -20,8 +20,6 @@ export function StepsNavBar({ currentStep, setCurrentStep }: Props) {
         >
           next
         </button>
-
-        <button disabled={currentStep !== TOTAL_STEPS - 1}>Generate images</button>
       </nav>
     </footer>
   );
