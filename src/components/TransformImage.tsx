@@ -18,7 +18,12 @@ const cld = new Cloudinary({
   }
 });
 
-type TransformedImages = { id: string; platformName: string; avatar: string; banner: string | null };
+type TransformedImages = {
+  id: string;
+  platformName: string;
+  avatar: string;
+  banners: { name: string; url: string; id: string; width: number; height: number }[] | null;
+};
 
 type Props = {
   imageData: ImageData;
@@ -50,33 +55,40 @@ export function TransformImage({ imageData, platformList }: Props) {
 
       const uploadedImgPublicID = response?.data?.public_id;
 
-      const transformedImages: TransformedImages[] = platformList.map((platformName) => {
-        // cldImg -> Cloudinary image
-        const cldImage = cld.image(uploadedImgPublicID);
-
+      const transformedImages = platformList.map((platformName) => {
         const avatarDimensions = Resize.fill().width(150).height(150);
-        const avatar = cldImage.resize(avatarDimensions).toURL();
+        const avatar = cld.image(uploadedImgPublicID).resize(avatarDimensions).toURL();
         const platformId = uuid();
 
-        const bannerWidth = PLATFORM_BANNER_SIZES[platformName]?.banner?.width;
-        const bannerHeight = PLATFORM_BANNER_SIZES[platformName]?.banner?.height;
+        const platformBanners = PLATFORM_BANNER_SIZES[platformName].banners ?? [];
+        const hasBanners = platformBanners.length > 0;
 
-        const hasBanner = typeof bannerHeight === 'number' && typeof bannerWidth === 'number';
-        if (!hasBanner) {
+        if (!hasBanners) {
           return {
             avatar,
-            platformName,
-            banner: null,
-            id: platformId
+            banners: null,
+            id: platformId,
+            platformName
           };
         }
 
-        const bannerDimensions = Resize.fill().width(bannerWidth).height(bannerHeight);
-        const banner = cldImage.resize(bannerDimensions).toURL();
+        const banners = platformBanners.map(({ name, width, height }) => {
+          const transformation = Resize.fill().width(width).height(height);
+
+          const url = cld.image(uploadedImgPublicID).resize(transformation).toURL();
+
+          return {
+            name,
+            url,
+            width,
+            height,
+            id: uuid()
+          };
+        });
 
         return {
           avatar,
-          banner,
+          banners,
           platformName,
           id: platformId
         };
@@ -92,26 +104,38 @@ export function TransformImage({ imageData, platformList }: Props) {
     <section className="w-full flex flex-col gap-4 p-4">
       {transformedImages && (
         <div className="flex flex-col gap-20 p-4">
-          {transformedImages.map(({ avatar, banner, id, platformName }) => (
+          {transformedImages.map(({ avatar, banners, id, platformName }) => (
             <div
               key={id}
-              className="flex flex-col justify-center items-center gap-4 p-4 text-center shadow-2xl rounded"
+              className="flex flex-col justify-center items-center gap-12 p-4 text-center shadow-2xl rounded"
             >
               <h3 className="text-2xl text-blue-500">{platformName}</h3>
-              {banner && (
-                <>
-                  <h5>Banner:</h5>
-                  <img className="max-w-sm rounded" src={banner} alt="Nyan cat?" />
-                </>
-              )}
-              <h5>Avatar:</h5>
-              <img className="max-w-sm rounded-full" src={avatar} alt="Nyan cat?" />
+
+              {banners &&
+                banners?.map(({ name, url, id, height, width }) => (
+                  <figure key={id} className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded">
+                    <h5 className="text-xl">{name.toUpperCase()}</h5>
+                    <img className="object-cover max-w-xl rounded" src={url} alt="Nyan cat?" />
+                    <figcaption className="text-gray-700">
+                      {width}x{height}
+                    </figcaption>
+                  </figure>
+                ))}
+
+              <figure className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded-full">
+                <h5 className="text-xl">AVATAR</h5>
+                <img className="object-cover max-w-xl rounded-full" src={avatar} alt="Nyan cat?" />
+              </figure>
             </div>
           ))}
         </div>
       )}
 
-      <button className="max-w-fit mx-auto" onClick={() => handleTransformImg(imageData)}>
+      <button
+        disabled={uploadProgress !== null}
+        className="max-w-fit mx-auto"
+        onClick={() => handleTransformImg(imageData)}
+      >
         Generate images
       </button>
 
