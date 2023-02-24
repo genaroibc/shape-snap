@@ -18,7 +18,6 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
     }
   }, [imgData]);
 
-  console.log('render upload zone');
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
