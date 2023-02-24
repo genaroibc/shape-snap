@@ -9,3 +9,10 @@ export interface KnownResult<T> {
 }
 
 export type ImageData = { src: string; title: string };
+
+export type PlatformBannerSize = {
+  width: number;
+  height: number;
+};
+
+export type PlatformImage = Record<string, { banner: PlatformBannerSize | null }>;
