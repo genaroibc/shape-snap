@@ -52,9 +52,9 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
         onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
         onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
         onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
-        className={`grid hover:cursor-pointer place-content-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl
-          transition-scale duration-200
-          ${isDragging ? 'bg-green-500 scale-125' : 'bg-transparent'}`}
+        className={`grid hover:cursor-pointer place-content-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
+          isDragging ? 'scale-125' : 'bg-transparent'
+        }`}
       >
         <p>drop your images here</p>
       </section>

@@ -10,7 +10,7 @@ export function StepsBreadCrumb({ currentStep }: Props) {
       <nav className="flex gap-6 text-xl">
         {STEP_LIST.map((stepTitle, index) => (
           <span
-            className={`after:content-['>'] relative after:absolute
+            className={`after:content-['>'] relative -z-10 after:absolute
             after:-right-4 last-of-type:after:content-[''] ${currentStep === index ? 'underline' : ''}`}
             key={index}
           >
