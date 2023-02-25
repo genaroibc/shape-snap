@@ -9,7 +9,7 @@ import { TransformImage } from './TransformImage';
 
 export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedPlatforms, setSelectedPlatforms] = useState<Record<string, boolean>>({});
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [userImgData, setUserImgData] = useState<ImageData | null>(null);
 
   const handleSelectionChange = (e: React.ChangeEvent) => {
@@ -19,11 +19,21 @@ export function Steps() {
 
     if (!platformName) return;
 
-    setSelectedPlatforms((currentPlatforms) => ({ ...currentPlatforms, [platformName]: isSelectedPlatform }));
+    setSelectedPlatforms((currentPlatforms) => {
+      return isSelectedPlatform
+        ? [...currentPlatforms, platformName]
+        : currentPlatforms.filter((platform) => platform !== platformName);
+    });
   };
 
   const handleNewUserImageData = (imageData: ImageData) => {
     setUserImgData(imageData);
+  };
+
+  const stepRequirements: Record<number, boolean> = {
+    0: userImgData !== null,
+    1: selectedPlatforms.length > 0,
+    2: true
   };
 
   return (
@@ -33,12 +43,7 @@ export function Steps() {
       <div className="min-h-[450px]">
         {currentStep === 0 && <UploadZone defaultImgData={userImgData} onNewImgData={handleNewUserImageData} />}
         {currentStep === 1 && (
-          <PlatformList
-            selectedPlatforms={Object.entries(selectedPlatforms)
-              .filter(([, isSelected]) => isSelected)
-              .map(([platformName]) => platformName)}
-            onSelectionChange={handleSelectionChange}
-          />
+          <PlatformList selectedPlatforms={selectedPlatforms} onSelectionChange={handleSelectionChange} />
         )}
         {currentStep === 2 && (
           <div className="w-full mx-auto text-center flex flex-col gap-4">
@@ -47,30 +52,23 @@ export function Steps() {
             ) : (
               <p className="text-red-500 text-2xl">No image provided, please upload one</p>
             )}
-            {Object.entries(selectedPlatforms)
-              .filter(([, isSelected]) => isSelected)
-              .map(([name]) => (
-                <span className="font-bold" key={name}>
-                  {name}
-                </span>
-              ))}
+            {selectedPlatforms.map((platformName) => (
+              <span className="font-bold" key={platformName}>
+                {platformName}
+              </span>
+            ))}
           </div>
         )}
         {currentStep === 3 && (
-          <>
-            {userImgData && (
-              <TransformImage
-                platformList={Object.entries(selectedPlatforms)
-                  .filter(([, isSelected]) => isSelected)
-                  .map(([platformName]) => platformName)}
-                imageData={userImgData}
-              />
-            )}
-          </>
+          <>{userImgData && <TransformImage platformList={selectedPlatforms} imageData={userImgData} />}</>
         )}
       </div>
 
-      <StepsNavBar currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      <StepsNavBar
+        canGoToNextStep={stepRequirements[currentStep]}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
     </section>
   );
 }
