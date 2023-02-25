@@ -23,13 +23,27 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
     event.stopPropagation();
 
     setIsDragging(false);
-    setImgData(null);
 
     const draggedData = event.dataTransfer;
     const imageFiles = draggedData.files;
 
-    Array.from(imageFiles).forEach((imageFile) => {
-      readImageFile(imageFile).then((result) => {
+    if (imageFiles) return setError('No images found, please try again');
+
+    handleReadImgFiles(imageFiles);
+  };
+
+  const handleInputFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputFile = e.target as HTMLInputElement;
+    const imageFiles = inputFile?.files;
+
+    if (!imageFiles) return setError('No images found, please try again');
+
+    handleReadImgFiles(imageFiles);
+  };
+
+  const handleReadImgFiles = (imageFiles: FileList) => {
+    Array.from(imageFiles).forEach((imgFile) => {
+      readImageFile(imgFile).then((result) => {
         if (!result.ok) return setError(result.error);
 
         setImgData(result.data);
@@ -56,6 +70,7 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
           isDragging ? 'scale-125' : 'bg-transparent'
         }`}
       >
+        <input type="file" onChange={handleInputFileChange} />
         <p>drop your images here</p>
       </section>
 
