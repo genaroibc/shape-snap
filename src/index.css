@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #eeeeee;
+  --primary-color: #fff;
   --primary-color-darker: #01a1dc;
   --secondary-color: #fff1dc;
   --tertiary-color: #cf2b44;
@@ -23,6 +23,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  scroll-behavior: smooth;
 }
 
 progress {
@@ -43,7 +45,7 @@ body {
   margin: 0;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 1rem;
 }
 
 p {

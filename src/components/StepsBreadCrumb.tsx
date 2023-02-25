@@ -7,7 +7,7 @@ type Props = {
 export function StepsBreadCrumb({ currentStep }: Props) {
   return (
     <header className="flex flex-col gap-4">
-      <nav className="flex gap-6 text-xl">
+      <nav className="flex gap-6 text-lg">
         {STEP_LIST.map((stepTitle, index) => (
           <span
             className={`after:content-['>'] relative -z-10 after:absolute

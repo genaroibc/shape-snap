@@ -4,10 +4,10 @@ export function Header() {
       style={{
         WebkitBackdropFilter: 'blur(8px)'
       }}
-      className="sticky top-0 left-0 w-full shadow-md  backdrop-blur-[8px]"
+      className="sticky top-0 left-0 w-full shadow-sm bg-white/80 backdrop-blur-[8px]"
     >
       <div className="m-auto max-w-[1000px] flex justify-between gap-4 p-4 items-center font-semibold">
-        <img src="public/assets/logo/transparent-rectangular-logo.svg" alt="Shape Snap logotype" width="150" />
+        <img src="/assets/logo/transparent-rectangular-logo.svg" alt="Shape Snap logotype" width="150" />
         <nav>
           <ul className="flex gap-4 w-full self-end">
             <li>
