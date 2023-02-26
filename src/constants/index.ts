@@ -1,5 +1,5 @@
 export const STEP_LIST = [
-  'Upload your images',
+  'Upload your image',
   'Select social media platforms',
   'Confirm your choices',
   'Generate images'

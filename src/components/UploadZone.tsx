@@ -85,7 +85,7 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
           <p>{error}</p>
         ) : (
           imgData?.src && (
-            <figure className="relative">
+            <figure className="relative max-w-xs">
               <button
                 onClick={() => setImgData(null)}
                 className="removeImgBtn absolute rounded-md top-0 right-0 p-2 m-0 bg-red-400 z-10 hover:bg-red-600 hover:grayscale-70"
