@@ -79,13 +79,13 @@ button {
   font-weight: 500;
   font-family: inherit;
   color: #f6f6f6;
-  background-color: #09f !important;
+  background-color: #09f;
   cursor: pointer;
   transition: background-color 0.2s ease, filter 0.2s ease;
 }
 
-button:not(:disabled):hover {
-  background-color: rgb(0, 125, 209) !important;
+button:where(:not(:disabled)):hover {
+  background-color: rgb(0, 125, 209);
 }
 
 button:focus,
@@ -102,4 +102,12 @@ button:disabled {
   :root {
     font-size: 12px;
   }
+}
+
+.removeImgBtn + img {
+  transition: filter 0.2s ease;
+}
+
+.removeImgBtn:hover + img {
+  filter: grayscale(80) brightness(90%);
 }

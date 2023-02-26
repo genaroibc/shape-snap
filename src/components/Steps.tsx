@@ -26,7 +26,7 @@ export function Steps() {
     });
   };
 
-  const handleNewUserImageData = (imageData: ImageData) => {
+  const handleNewUserImageData = (imageData: ImageData | null) => {
     setUserImgData(imageData);
   };
 

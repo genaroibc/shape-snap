@@ -3,7 +3,7 @@ import { readImageFile } from '../utils/readImageFile';
 import type { ImageData } from '../types';
 
 type Props = {
-  onNewImgData: (imageData: ImageData) => void;
+  onNewImgData: (imageData: ImageData | null) => void;
   defaultImgData: ImageData | null;
 };
 
@@ -13,8 +13,12 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    if (imgData?.src && imgData.title) {
-      onNewImgData({ src: imgData?.src, title: imgData?.title });
+    const { src, title } = imgData ?? {};
+    const isValidImgData = src && title;
+    const isRemovedImg = imgData === null;
+
+    if (isValidImgData || isRemovedImg) {
+      onNewImgData(imgData);
     }
   }, [imgData]);
 
@@ -59,7 +63,7 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
   };
 
   return (
-    <section className="p-12 flex items-center gap-4 shadow-2xl">
+    <section className="p-12 flex items-center gap-4">
       <label htmlFor="browse-files">
         <section
           draggable
@@ -67,11 +71,11 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
           onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
           onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
           onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
-          className={`grid hover:cursor-pointer place-content-center gap-2 text-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
+          className={`grid hover:cursor-pointer hover:scale-125 hover:shadow-2xl place-content-center gap-2 text-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
             isDragging ? 'scale-125' : 'bg-transparent'
           }`}
         >
-          <img src="/public/assets/svg/upload-image.svg" alt="Upload your images here" />
+          <img src="/assets/svg/upload-image.svg" alt="Upload your images here" />
           <input hidden name="browse-files" id="browse-files" type="file" onChange={handleInputFileChange} />
         </section>
       </label>
@@ -81,10 +85,15 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
           <p>{error}</p>
         ) : (
           imgData?.src && (
-            <>
-              <img className="border-4 rounded-md" src={imgData.src} alt={imgData.title} />
-              <h6>{imgData.title}</h6>
-            </>
+            <figure className="relative">
+              <button
+                onClick={() => setImgData(null)}
+                className="removeImgBtn absolute rounded-md top-0 right-0 p-2 m-0 bg-red-400 z-10 hover:bg-red-600 hover:grayscale-70"
+              >
+                <img className="w-4" src="/assets/svg/close.svg" alt="remove file" />
+              </button>
+              <img className="rounded-md w-full" src={imgData.src} alt={imgData.title} />
+            </figure>
           )
         )}
       </div>
