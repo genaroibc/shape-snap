@@ -37,7 +37,7 @@ export function Steps() {
   };
 
   return (
-    <section id="playground" className="max-w-7xl grid place-content-center gap-4 mx-auto py-12">
+    <section id="playground" className="max-w-5xl w-full flex flex-col gap-4 mx-auto py-12">
       <StepsBreadCrumb currentStep={currentStep} />
       <h3 className="text-3xl my-8">{STEP_LIST[currentStep]}</h3>
       <div className="min-h-[450px]">
@@ -46,20 +46,6 @@ export function Steps() {
           <PlatformList selectedPlatforms={selectedPlatforms} onSelectionChange={handleSelectionChange} />
         )}
         {currentStep === 2 && (
-          <div className="w-full mx-auto text-center flex flex-col gap-4">
-            {userImgData ? (
-              <img className="w-48 mx-auto border-4 rounded-md" src={userImgData.src} alt={userImgData.title} />
-            ) : (
-              <p className="text-red-500 text-2xl">No image provided, please upload one</p>
-            )}
-            {selectedPlatforms.map((platformName) => (
-              <span className="font-bold" key={platformName}>
-                {platformName}
-              </span>
-            ))}
-          </div>
-        )}
-        {currentStep === 3 && (
           <>{userImgData && <TransformImage platformList={selectedPlatforms} imageData={userImgData} />}</>
         )}
       </div>

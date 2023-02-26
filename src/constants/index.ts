@@ -1,7 +1,7 @@
 export const STEP_LIST = [
   'Upload your image',
   'Select social media platforms',
-  'Confirm your choices',
+  // 'Confirm your choices',
   'Generate images'
 ];
 

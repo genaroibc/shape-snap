@@ -98,6 +98,11 @@ button:disabled {
   filter: grayscale(0.5);
 }
 
+ul,
+li {
+  margin: 0;
+}
+
 @media screen and (max-width: 768px) {
   :root {
     font-size: 12px;
