@@ -51,6 +51,7 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
         if (!result.ok) return setError(result.error);
 
         setImgData(result.data);
+        setError(null);
       });
     });
   };
