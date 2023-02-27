@@ -3,7 +3,7 @@ export function Hero() {
     <section className="mx-auto lg:mt-[10vh] mb-[30vh] grid grid-cols-2 gap-4 pt-10">
       <img
         className="rounded"
-        src="/assets/logo/hero-banner.png"
+        src="/assets/hero-banner.webp"
         alt="A PC and mobile phone displaying a Twitter account banner"
       />
       <div>
