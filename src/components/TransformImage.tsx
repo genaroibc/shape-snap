@@ -21,8 +21,7 @@ const cld = new Cloudinary({
 type TransformedImages = {
   id: string;
   platformName: string;
-  avatar: string;
-  banners: { name: string; url: string; id: string; width: number; height: number }[] | null;
+  banners: { name: string; url: string; id: string; width: number; height: number }[];
 };
 
 type Props = {
@@ -55,22 +54,10 @@ export function TransformImage({ imageData, platformList }: Props) {
 
       const uploadedImgPublicID = response?.data?.public_id;
 
-      const transformedImages = platformList.map((platformName) => {
-        const avatarDimensions = Resize.fill().width(150).height(150);
-        const avatar = cld.image(uploadedImgPublicID).resize(avatarDimensions).toURL();
+      const transformedImages: TransformedImages[] = platformList.map((platformName) => {
         const platformId = uuid();
 
-        const platformBanners = PLATFORM_BANNER_SIZES[platformName].banners ?? [];
-        const hasBanners = platformBanners.length > 0;
-
-        if (!hasBanners) {
-          return {
-            avatar,
-            banners: null,
-            id: platformId,
-            platformName
-          };
-        }
+        const platformBanners = PLATFORM_BANNER_SIZES[platformName].banners;
 
         const banners = platformBanners.map(({ name, width, height }) => {
           const transformation = Resize.fill().width(width).height(height);
@@ -87,7 +74,6 @@ export function TransformImage({ imageData, platformList }: Props) {
         });
 
         return {
-          avatar,
           banners,
           platformName,
           id: platformId
@@ -104,7 +90,7 @@ export function TransformImage({ imageData, platformList }: Props) {
     <section className="w-full flex flex-col gap-4 p-4">
       {transformedImages && (
         <div className="flex flex-col gap-20 p-4">
-          {transformedImages.map(({ avatar, banners, id, platformName }) => (
+          {transformedImages.map(({ banners, id, platformName }) => (
             <div
               key={id}
               className="flex flex-col justify-center items-center gap-12 p-4 text-center shadow-2xl rounded"
@@ -119,13 +105,12 @@ export function TransformImage({ imageData, platformList }: Props) {
                     <figcaption className="text-gray-700">
                       {width}x{height}
                     </figcaption>
+
+                    <a href="/assets/svg/close.svg" download target="_blank" rel="noopener noreferrer">
+                      download
+                    </a>
                   </figure>
                 ))}
-
-              <figure className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded-full">
-                <h5 className="text-xl">AVATAR</h5>
-                <img className="object-cover max-w-xl rounded-full" src={avatar} alt="Nyan cat?" />
-              </figure>
             </div>
           ))}
         </div>

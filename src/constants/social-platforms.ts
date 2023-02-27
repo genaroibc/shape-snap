@@ -10,18 +10,6 @@ export const PLATFORM_BANNER_SIZES: PlatformBanners = {
       }
     ]
   },
-  instagram: {
-    banners: null
-  },
-  tiktok: {
-    banners: null
-  },
-  twitch: {
-    banners: null
-  },
-  github: {
-    banners: null
-  },
   youtube: {
     banners: [
       { name: 'television', width: 2560, height: 1440 },

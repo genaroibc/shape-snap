@@ -15,4 +15,4 @@ export type PlatformBannerSize = {
   height: number;
 };
 
-export type PlatformBanners = Record<string, { banners: { name: string; width: number; height: number }[] | null }>;
+export type PlatformBanners = Record<string, { banners: { name: string; width: number; height: number }[] }>;
