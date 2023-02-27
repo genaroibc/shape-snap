@@ -1,11 +1,4 @@
-type PlatformItem = { name: string; iconSrc: string };
-
-const PLATFORM_LIST: PlatformItem[] = [
-  { name: 'twitch', iconSrc: '/assets/svg/brands/twitch.svg' },
-  { name: 'youtube', iconSrc: '/assets/svg/brands/youtube.svg' },
-  { name: 'tiktok', iconSrc: '/assets/svg/brands/tiktok.svg' },
-  { name: 'twitter', iconSrc: '/assets/svg/brands/twitter.svg' }
-];
+import { PLATFORM_LIST } from '../constants/social-platforms';
 
 type Props = {
   onSelectionChange: (e: React.ChangeEvent) => void;
