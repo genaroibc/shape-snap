@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { ImageData } from '../types';
 import { PLATFORM_BANNER_SIZES } from '../constants/social-platforms';
 import { v4 as uuid } from 'uuid';
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 import axios from 'axios';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
@@ -86,6 +88,34 @@ export function TransformImage({ imageData, platformList }: Props) {
     }
   };
 
+  const handleDownloadZIPFile = async () => {
+    if (!transformedImages) return;
+
+    const bannersData = transformedImages.map(({ banners, platformName }) => ({
+      url: banners[0].url,
+      name: platformName
+    }));
+
+    const zip = new JSZip();
+
+    await new Promise((resolve) => {
+      const filePromises = bannersData.map(async (platformBanner) => {
+        const imageResponse = await fetch(platformBanner.url);
+        const imageBlob = await imageResponse.blob();
+
+        const fileName = `${platformBanner.name}-banner.jpeg`;
+        zip.file(fileName, imageBlob, { binary: true });
+      });
+
+      Promise.allSettled(filePromises).then(() => resolve(null));
+    });
+
+    zip.generateAsync({ type: 'blob' }).then((content) => {
+      const zipFileName = 'shape-snap-banners.zip';
+      saveAs(content, zipFileName);
+    });
+  };
+
   return (
     <section className="w-full flex flex-col gap-4 p-4">
       {transformedImages && (
@@ -97,20 +127,15 @@ export function TransformImage({ imageData, platformList }: Props) {
             >
               <h3 className="text-2xl text-blue-500">{platformName}</h3>
 
-              {banners &&
-                banners?.map(({ name, url, id, height, width }) => (
-                  <figure key={id} className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded">
-                    <h5 className="text-xl">{name.toUpperCase()}</h5>
-                    <img className="object-cover max-w-xl rounded" src={url} alt="Nyan cat?" />
-                    <figcaption className="text-gray-700">
-                      {width}x{height}
-                    </figcaption>
-
-                    <a href="/assets/svg/close.svg" download target="_blank" rel="noopener noreferrer">
-                      download
-                    </a>
-                  </figure>
-                ))}
+              {banners.map(({ name, url, id, height, width }) => (
+                <figure key={id} className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded">
+                  <h5 className="text-xl">{name.toUpperCase()}</h5>
+                  <img className="object-cover max-w-xl rounded" src={url} alt="Nyan cat?" />
+                  <figcaption className="text-gray-700">
+                    {width}x{height}
+                  </figcaption>
+                </figure>
+              ))}
             </div>
           ))}
         </div>
@@ -125,6 +150,8 @@ export function TransformImage({ imageData, platformList }: Props) {
       </button>
 
       {uploadProgress && !transformedImages && <progress className="w-full" max={100} value={uploadProgress} />}
+
+      <button onClick={handleDownloadZIPFile}>Download generated banners</button>
     </section>
   );
 }
