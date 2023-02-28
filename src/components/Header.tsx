@@ -8,7 +8,7 @@ export function Header() {
     >
       <div className="m-auto max-w-[1000px] flex justify-between gap-4 p-4 items-center font-semibold">
         <img src="/assets/logo/transparent-rectangular-logo.svg" alt="Shape Snap logotype" width="150" />
-        <nav>
+        <nav className="hidden lg:block">
           <ul className="flex gap-4 w-full self-end">
             <li>
               <a href="#home" className="font-normal text-gray-800 hover:text-black">

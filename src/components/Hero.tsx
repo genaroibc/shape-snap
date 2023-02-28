@@ -1,6 +1,6 @@
 export function Hero() {
   return (
-    <section className="mx-auto lg:mt-[10vh] mb-[30vh] grid grid-cols-2 gap-4 pt-10">
+    <section className="mx-auto lg:mt-[10vh] mb-[30vh] grid grid-cols-1 lg:grid-cols-2 gap-4 pt-10">
       <img
         className="rounded"
         src="/assets/hero-banner.webp"
