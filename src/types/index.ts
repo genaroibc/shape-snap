@@ -34,3 +34,11 @@ export type PlatformName = keyof typeof _PLATFORM_NAMES_DICTIONARY;
 export function isPlatformName(data: unknown): data is PlatformName {
   return typeof data === 'string' && Object.keys(_PLATFORM_NAMES_DICTIONARY).includes(data);
 }
+
+export type TransformedImageBanner = { name: string; url: string; id: string; width: number; height: number };
+
+export type TransformedImages = {
+  id: string;
+  platformName: string;
+  banners: TransformedImageBanner[];
+};

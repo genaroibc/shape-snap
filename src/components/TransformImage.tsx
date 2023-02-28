@@ -1,7 +1,7 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 import { Resize } from '@cloudinary/url-gen/actions';
 import { useState } from 'react';
-import { ImageData, PlatformName } from '../types';
+import { ImageData, PlatformName, TransformedImages } from '../types';
 import { PLATFORM_BANNER_SIZES } from '../constants/social-platforms';
 import { v4 as uuid } from 'uuid';
 import { saveAs } from 'file-saver';
@@ -21,12 +21,6 @@ const cld = new Cloudinary({
     secure: true
   }
 });
-
-type TransformedImages = {
-  id: string;
-  platformName: string;
-  banners: { name: string; url: string; id: string; width: number; height: number }[];
-};
 
 type Props = {
   imageData: ImageData;
