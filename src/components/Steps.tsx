@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PlatformList } from './PlatformList';
 import { UploadZone } from './UploadZone';
-import type { ImageData } from '../types';
+import { ImageData, isPlatformName, PlatformName } from '../types';
 import { STEP_LIST } from '../constants';
 import { StepsBreadCrumb } from './StepsBreadCrumb';
 import { StepsNavBar } from './StepsNavBar';
@@ -9,7 +9,7 @@ import { TransformImage } from './TransformImage';
 
 export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<PlatformName[]>([]);
   const [userImgData, setUserImgData] = useState<ImageData | null>(null);
 
   const handleSelectionChange = (e: React.ChangeEvent) => {
@@ -17,7 +17,7 @@ export function Steps() {
     const platformName = platformInput.name;
     const isSelectedPlatform = platformInput.checked;
 
-    if (!platformName) return;
+    if (!platformName || !isPlatformName(platformName)) return;
 
     setSelectedPlatforms((currentPlatforms) => {
       return isSelectedPlatform

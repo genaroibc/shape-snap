@@ -1,12 +1,16 @@
-import { PlatformBanners, PlatformItem } from '../types';
+import { PlatformBanners, PlatformItem, PlatformName } from '../types';
 
-export const PLATFORM_LIST: PlatformItem[] = [
-  { name: 'twitch', iconSrc: '/assets/svg/brands/twitch.svg' },
-  { name: 'youtube', iconSrc: '/assets/svg/brands/youtube.svg' },
-  { name: 'twitter', iconSrc: '/assets/svg/brands/twitter.svg' },
-  { name: 'pinterest', iconSrc: '/assets/svg/brands/pinterest.svg' },
-  { name: 'linkedin', iconSrc: '/assets/svg/brands/linkedin.svg' }
-];
+const _PLATFORM_ICON_URLS: Record<PlatformName, string> = {
+  twitch: '/assets/svg/brands/twitch.svg',
+  youtube: '/assets/svg/brands/youtube.svg',
+  twitter: '/assets/svg/brands/twitter.svg',
+  pinterest: '/assets/svg/brands/pinterest.svg',
+  linkedin: '/assets/svg/brands/linkedin.svg'
+};
+
+export const PLATFORM_ITEMS: PlatformItem[] = (
+  Object.entries(_PLATFORM_ICON_URLS) as Array<[PlatformName, string]>
+).map(([name, iconSrc]) => ({ iconSrc, name }));
 
 export const PLATFORM_BANNER_SIZES: PlatformBanners = {
   twitter: {

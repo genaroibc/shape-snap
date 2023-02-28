@@ -1,4 +1,4 @@
-import { PLATFORM_LIST } from '../constants/social-platforms';
+import { PLATFORM_ITEMS } from '../constants/social-platforms';
 
 type Props = {
   onSelectionChange: (e: React.ChangeEvent) => void;
@@ -9,7 +9,7 @@ export function PlatformList({ onSelectionChange, selectedPlatforms }: Props) {
   return (
     <section>
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-8 p-8 mx-auto">
-        {PLATFORM_LIST.map(({ iconSrc, name }) => (
+        {PLATFORM_ITEMS.map(({ iconSrc, name }) => (
           <li title={name} key={name}>
             <input
               onChange={onSelectionChange}

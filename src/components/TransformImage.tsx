@@ -1,7 +1,7 @@
 import { Cloudinary } from '@cloudinary/url-gen';
 import { Resize } from '@cloudinary/url-gen/actions';
 import { useState } from 'react';
-import { ImageData } from '../types';
+import { ImageData, PlatformName } from '../types';
 import { PLATFORM_BANNER_SIZES } from '../constants/social-platforms';
 import { v4 as uuid } from 'uuid';
 import { saveAs } from 'file-saver';
@@ -28,7 +28,7 @@ type TransformedImages = {
 
 type Props = {
   imageData: ImageData;
-  platformList: string[];
+  platformList: PlatformName[];
 };
 
 export function TransformImage({ imageData, platformList }: Props) {
