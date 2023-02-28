@@ -7,6 +7,8 @@ import { v4 as uuid } from 'uuid';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import axios from 'axios';
+import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
+import { faces } from '@cloudinary/url-gen/qualifiers/focusOn';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 if (!CLOUD_NAME) throw new Error("'VITE_CLOUDINARY_CLOUD_NAME' env variable is not defined");
@@ -35,7 +37,19 @@ export function TransformImage({ imageData, platformList }: Props) {
   const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
-  const handleTransformImg = async (imageData: ImageData) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formElement = event.target as HTMLFormElement;
+    const containsFaces = formElement['containsFaces'].checked;
+
+    handleTransformImg({ containsFaces, imageData });
+  };
+
+  type HandleTansformImgProps = {
+    containsFaces: boolean;
+    imageData: ImageData;
+  };
+  const handleTransformImg = async ({ containsFaces, imageData }: HandleTansformImgProps) => {
     const API_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_API_URL;
 
     if (!API_URL) {
@@ -58,13 +72,15 @@ export function TransformImage({ imageData, platformList }: Props) {
 
       const transformedImages: TransformedImages[] = platformList.map((platformName) => {
         const platformId = uuid();
-
         const platformBanners = PLATFORM_BANNER_SIZES[platformName].banners;
+        const uploadedImg = cld.image(uploadedImgPublicID);
 
         const banners = platformBanners.map(({ name, width, height }) => {
-          const transformation = Resize.fill().width(width).height(height);
+          const initialTransformation = Resize.fill().width(width).height(height);
 
-          const url = cld.image(uploadedImgPublicID).resize(transformation).toURL();
+          const url = containsFaces
+            ? uploadedImg.resize(initialTransformation.gravity(focusOn(faces()))).toURL()
+            : uploadedImg.resize(initialTransformation).toURL();
 
           return {
             name,
@@ -118,6 +134,17 @@ export function TransformImage({ imageData, platformList }: Props) {
 
   return (
     <section className="w-full flex flex-col gap-4 p-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 justify-center items-center">
+        <img className="max-w-lg" src={imageData.src} alt={imageData.title} />
+
+        <div className="text-xl">
+          <label htmlFor="containsFaces">Contains faces</label>
+          <input className="mx-4" type="checkbox" id="containsFaces" name="containsFaces" />
+        </div>
+
+        <button className="max-w-fit mx-auto">Generate images</button>
+      </form>
+
       {transformedImages && (
         <div className="flex flex-col gap-20 p-4">
           {transformedImages.map(({ banners, id, platformName }) => (
@@ -130,7 +157,12 @@ export function TransformImage({ imageData, platformList }: Props) {
               {banners.map(({ name, url, id, height, width }) => (
                 <figure key={id} className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded">
                   <h5 className="text-xl">{name.toUpperCase()}</h5>
-                  <img className="object-cover max-w-xl rounded" src={url} alt="Nyan cat?" />
+                  <img
+                    className="object-cover max-w-xl rounded"
+                    src={url}
+                    alt={`${platformName} banner in ${name} resolution`}
+                    title={`${platformName} banner in ${name} resolution`}
+                  />
                   <figcaption className="text-gray-700">
                     {width}x{height}
                   </figcaption>
@@ -141,17 +173,9 @@ export function TransformImage({ imageData, platformList }: Props) {
         </div>
       )}
 
-      <button
-        disabled={uploadProgress !== null}
-        className="max-w-fit mx-auto"
-        onClick={() => handleTransformImg(imageData)}
-      >
-        Generate images
-      </button>
-
       {uploadProgress && !transformedImages && <progress className="w-full" max={100} value={uploadProgress} />}
 
-      <button onClick={handleDownloadZIPFile}>Download generated banners</button>
+      {transformedImages && <button onClick={handleDownloadZIPFile}>Download generated banners</button>}
     </section>
   );
 }
