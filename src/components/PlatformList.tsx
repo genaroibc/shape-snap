@@ -8,7 +8,7 @@ type Props = {
 export function PlatformList({ onSelectionChange, selectedPlatforms }: Props) {
   return (
     <section>
-      <ul className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-8 p-8 mx-auto">
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 lg:gap-8 lg:p-8 mx-auto">
         {PLATFORM_ITEMS.map(({ iconSrc, name }) => (
           <li title={name} key={name}>
             <input

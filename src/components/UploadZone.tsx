@@ -64,7 +64,7 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
   };
 
   return (
-    <section className="p-12 flex items-center gap-4">
+    <section className="lg:p-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-4">
       <label htmlFor="browse-files">
         <section
           draggable
@@ -72,7 +72,7 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
           onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
           onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
           onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
-          className={`grid hover:cursor-pointer hover:scale-125 hover:shadow-2xl place-content-center gap-2 text-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
+          className={`grid hover:cursor-pointer hover:scale-110 md:hover:scale-120 hover:shadow-2xl place-content-center gap-2 text-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
             isDragging ? 'scale-125' : 'bg-transparent'
           }`}
         >
