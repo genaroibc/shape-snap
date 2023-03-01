@@ -1,6 +1,6 @@
 import { TransformedImageBanner } from '../../types';
 
-export type Props = TransformedImageBanner;
+type Props = TransformedImageBanner;
 
 export function PinterestCard({ name, url, height, width }: Props) {
   return (

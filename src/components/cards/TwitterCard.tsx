@@ -1,6 +1,6 @@
 import { TransformedImageBanner } from '../../types';
 
-export type Props = TransformedImageBanner;
+type Props = TransformedImageBanner;
 
 export function TwitterCard({ name, url, height, width }: Props) {
   return (
@@ -40,7 +40,7 @@ export function TwitterCard({ name, url, height, width }: Props) {
             </svg>
           </div>
 
-          <span className="border-2 w-fit rounded-full grid place-content-center px-4 font-medium text-lg">
+          <span className="border-2 w-fit rounded-full grid place-content-center px-4 py-2 font-medium text-lg">
             Following
           </span>
         </nav>

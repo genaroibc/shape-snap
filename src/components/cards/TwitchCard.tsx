@@ -1,6 +1,6 @@
 import { TransformedImageBanner } from '../../types';
 
-export type Props = TransformedImageBanner;
+type Props = TransformedImageBanner;
 
 export function TwitchCard({ name, url, height, width }: Props) {
   return (
