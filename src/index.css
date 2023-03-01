@@ -65,6 +65,10 @@ a:hover {
   color: #fff;
 }
 
+img {
+  max-width: 100%;
+}
+
 h1 {
   font-size: 3.2em;
   margin: 1rem auto;
