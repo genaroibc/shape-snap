@@ -9,10 +9,7 @@ import JSZip from 'jszip';
 import axios from 'axios';
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
 import { faces } from '@cloudinary/url-gen/qualifiers/focusOn';
-import { TwitterCard } from './cards/TwitterCard';
-import { LinkedinCard } from './cards/LinkedinCard';
-import { PinterestCard } from './cards/PinterestCard';
-import { TwitchCard } from './cards/TwitchCard';
+import { PlatformCards } from './PlatformCards';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 if (!CLOUD_NAME) throw new Error("'VITE_CLOUDINARY_CLOUD_NAME' env variable is not defined");
@@ -130,7 +127,6 @@ export function TransformImage({ imageData, platformList }: Props) {
     });
   };
 
-  console.log(transformedImages);
   return (
     <section className="w-full flex flex-col gap-4 md:p-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:p-4 justify-center items-center">
@@ -144,27 +140,7 @@ export function TransformImage({ imageData, platformList }: Props) {
         <button className="max-w-fit mx-auto">Generate images</button>
       </form>
 
-      {transformedImages && (
-        <div className="flex flex-col gap-20 md:p-4">
-          {transformedImages.map(({ banners, id, platformName }) => (
-            <div key={id} className="flex flex-col justify-center items-center gap-12 md:p-4 text-center rounded">
-              <h3 className="text-2xl text-blue-500">{platformName}</h3>
-
-              {platformName === 'linkedin' ? (
-                <LinkedinCard {...{ ...banners[0], id }} />
-              ) : platformName === 'twitter' ? (
-                <TwitterCard {...{ ...banners[0], id }} />
-              ) : platformName === 'pinterest' ? (
-                <PinterestCard {...{ ...banners[0], id }} />
-              ) : platformName === 'twitch' ? (
-                <TwitchCard {...{ ...banners[0], id }} />
-              ) : (
-                <p>Nothing to render</p>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+      {transformedImages && <PlatformCards cards={transformedImages} />}
 
       {uploadProgress && !transformedImages && <progress className="w-full" max={100} value={uploadProgress} />}
 
