@@ -5,7 +5,7 @@ export type Props = TransformedImageBanner;
 export function TwitterCard({ name, url, height, width }: Props) {
   return (
     <>
-      <article className="w-full flex flex-col gap-4 pb-12 border-[1px] border-gray-200 overflow-hidden">
+      <article className="w-full flex flex-col gap-4 pb-12 border-[1px] border-gray-200 overflow-hidden shadow-2xl">
         <figure className="flex flex-col gap-4 bg-white relative">
           <img
             className="object-cover aspect-square w-1/5 rounded-full absolute right-3/4 bottom-0 translate-y-1/2 border-[3px] md:border-[5px] border-white"
@@ -21,7 +21,7 @@ export function TwitterCard({ name, url, height, width }: Props) {
           />
         </figure>
 
-        <nav className="flex flex-col items-start sm:bg-red-400 sm:flex-row gap-4 pt-16 w-full justify-end px-6">
+        <nav className="flex flex-col items-start sm:flex-row sm:items-center gap-4 pt-16 sm:pt-0 w-full justify-end px-6">
           <div className="flex gap-4">
             <svg className="rounded-full w-12 p-2 border-2" viewBox="0 0 24 24" aria-hidden="true">
               <g>
