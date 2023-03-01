@@ -9,6 +9,10 @@ import JSZip from 'jszip';
 import axios from 'axios';
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
 import { faces } from '@cloudinary/url-gen/qualifiers/focusOn';
+import { TwitterCard } from './cards/TwitterCard';
+import { LinkedinCard } from './cards/LinkedinCard';
+import { PinterestCard } from './cards/PinterestCard';
+import { TwitchCard } from './cards/TwitchCard';
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 if (!CLOUD_NAME) throw new Error("'VITE_CLOUDINARY_CLOUD_NAME' env variable is not defined");
@@ -126,10 +130,11 @@ export function TransformImage({ imageData, platformList }: Props) {
     });
   };
 
+  console.log(transformedImages);
   return (
-    <section className="w-full flex flex-col gap-4 p-4">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 justify-center items-center">
-        <img className="max-w-lg" src={imageData.src} alt={imageData.title} />
+    <section className="w-full flex flex-col gap-4 md:p-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:p-4 justify-center items-center">
+        <img src={imageData.src} alt={imageData.title} />
 
         <div className="text-xl">
           <label htmlFor="containsFaces">Contains faces</label>
@@ -140,28 +145,22 @@ export function TransformImage({ imageData, platformList }: Props) {
       </form>
 
       {transformedImages && (
-        <div className="flex flex-col gap-20 p-4">
+        <div className="flex flex-col gap-20 md:p-4">
           {transformedImages.map(({ banners, id, platformName }) => (
-            <div
-              key={id}
-              className="flex flex-col justify-center items-center gap-12 p-4 text-center shadow-2xl rounded"
-            >
+            <div key={id} className="flex flex-col justify-center items-center gap-12 md:p-4 text-center rounded">
               <h3 className="text-2xl text-blue-500">{platformName}</h3>
 
-              {banners.map(({ name, url, id, height, width }) => (
-                <figure key={id} className="flex flex-col gap-4 bg-white p-4 shadow-xl rounded">
-                  <h5 className="text-xl">{name.toUpperCase()}</h5>
-                  <img
-                    className="object-cover max-w-xl rounded"
-                    src={url}
-                    alt={`${platformName} banner in ${name} resolution`}
-                    title={`${platformName} banner in ${name} resolution`}
-                  />
-                  <figcaption className="text-gray-700">
-                    {width}x{height}
-                  </figcaption>
-                </figure>
-              ))}
+              {platformName === 'linkedin' ? (
+                <LinkedinCard {...{ ...banners[0], id }} />
+              ) : platformName === 'twitter' ? (
+                <TwitterCard {...{ ...banners[0], id }} />
+              ) : platformName === 'pinterest' ? (
+                <PinterestCard {...{ ...banners[0], id }} />
+              ) : platformName === 'twitch' ? (
+                <TwitchCard {...{ ...banners[0], id }} />
+              ) : (
+                <p>Nothing to render</p>
+              )}
             </div>
           ))}
         </div>
