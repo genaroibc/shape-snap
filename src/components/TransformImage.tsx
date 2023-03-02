@@ -129,7 +129,7 @@ export function TransformImage({ imageData, platformList }: Props) {
 
   return (
     <section className="w-full flex flex-col gap-4 md:p-4">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:p-4 justify-center items-center">
+      <form onSubmit={handleSubmit} className="flex max-w-lg mx-auto flex-col gap-4 md:p-4 justify-center items-center">
         <img src={imageData.src} alt={imageData.title} />
 
         <div className="text-xl">
