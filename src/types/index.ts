@@ -8,6 +8,8 @@ export interface KnownResult<T> {
   data: T;
 }
 
+export type KnownResponse<T> = KnownResult<T> | KnownError;
+
 export type ImageData = { src: string; title: string };
 
 export type PlatformBannerSize = {
