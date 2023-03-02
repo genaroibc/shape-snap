@@ -14,6 +14,7 @@ type Props = {
 export function TransformImage({ imageData, platformList }: Props) {
   const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,7 +34,7 @@ export function TransformImage({ imageData, platformList }: Props) {
       onProgress: (progress) => setUploadProgress(progress)
     });
 
-    if (!response.ok) return;
+    if (!response.ok) return setError(response.error);
 
     const { imagePublicID } = response.data;
 
@@ -84,6 +85,8 @@ export function TransformImage({ imageData, platformList }: Props) {
       </form>
 
       {transformedImages && <PlatformCards cards={transformedImages} />}
+
+      {error && <p>{error}</p>}
 
       {uploadProgress && !transformedImages && <progress className="w-full" max={100} value={uploadProgress} />}
 
