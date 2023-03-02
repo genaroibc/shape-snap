@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { readImageFile } from '../utils/readImageFile';
 import type { ImageData } from '../types';
+import { DemoImages } from './DemoImages';
 
 type Props = {
   onNewImgData: (imageData: ImageData | null) => void;
@@ -63,37 +64,52 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
     setIsDragging(isDragging);
   };
 
+  const handleSelectImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const eventTarget = e.target as HTMLImageElement;
+    setImgData({ src: eventTarget.src, title: eventTarget.alt });
+  };
+
   return (
     <section className="lg:p-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-4">
-      <label htmlFor="browse-files">
-        <section
-          draggable
-          onDrop={handleDrop}
-          onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
-          onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
-          onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
-          className={`grid hover:cursor-pointer hover:scale-110 md:hover:scale-120 hover:shadow-2xl place-content-center gap-2 text-center w-80 h-80 max-w-xl mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
-            isDragging ? 'scale-125' : 'bg-transparent'
-          }`}
-        >
-          <img src="/assets/svg/upload-image.svg" alt="Upload your images here" />
-          <input hidden name="browse-files" id="browse-files" type="file" onChange={handleInputFileChange} />
-        </section>
-      </label>
+      <div className="flex flex-col gap-4">
+        <label htmlFor="browse-files">
+          <section
+            draggable
+            onDrop={handleDrop}
+            onDragEnter={(event) => handleToggleDragging({ event, isDragging: true })}
+            onDragOver={(event) => handleToggleDragging({ event, isDragging: true })}
+            onDragLeave={(event) => handleToggleDragging({ event, isDragging: false })}
+            className={`w-full grid hover:cursor-pointer hover:scale-110 md:hover:scale-120 hover:shadow-2xl place-content-center gap-2 text-center max-w-80 mx-auto border-black border-dashed border-4 rounded-3xl transition-scale duration-200 ${
+              isDragging ? 'scale-125' : 'bg-transparent'
+            }`}
+          >
+            <img src="/assets/svg/upload-image.svg" alt="Upload your images here" />
+            <input hidden name="browse-files" id="browse-files" type="file" onChange={handleInputFileChange} />
+          </section>
+        </label>
 
-      <div className="max-w-xs w-full mx-auto text-center flex flex-col justify-center gap-4">
+        <p>or try one of these</p>
+        <DemoImages onSelect={handleSelectImage} />
+      </div>
+
+      <div className="max-w-md mx-auto text-center flex flex-col justify-center gap-4">
         {error ? (
           <p>{error}</p>
         ) : (
           imgData?.src && (
-            <figure className="relative max-w-xs">
+            <figure className="relative">
               <button
+                title="remove image"
+                aria-label="remove image"
                 onClick={() => setImgData(null)}
-                className="removeImgBtn absolute rounded-md top-0 right-0 p-2 m-0 bg-red-400 z-10 hover:bg-red-600 hover:grayscale-70"
+                className="removeImgBtn absolute rounded-md top-0 right-0 p-2 m-0 bg-red-500 z-10 hover:bg-red-600 hover:grayscale-70"
               >
                 <img className="w-4" src="/assets/svg/close.svg" alt="remove file" />
               </button>
-              <img className="rounded-md w-full" src={imgData.src} alt={imgData.title} />
+              <img className="rounded-md w-full" src={imgData.src} title={imgData.title} alt={imgData.title} />
             </figure>
           )
         )}
