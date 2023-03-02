@@ -37,7 +37,7 @@ export function Steps() {
   };
 
   return (
-    <section id="playground" className="max-w-5xl w-full flex flex-col gap-4 mx-auto py-12">
+    <section id="playground" className="max-w-[1400px] w-full flex flex-col gap-4 mx-auto py-12">
       <StepsBreadCrumb currentStep={currentStep} />
       <h3 className="text-3xl my-8">{STEP_LIST[currentStep]}</h3>
       <div className="min-h-[450px]">
