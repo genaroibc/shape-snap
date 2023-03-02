@@ -1,27 +1,10 @@
-import { Cloudinary } from '@cloudinary/url-gen';
-import { Resize } from '@cloudinary/url-gen/actions';
 import { useState } from 'react';
 import { ImageData, PlatformName, TransformedImages } from '../types';
-import { PLATFORM_BANNER_SIZES } from '../constants/social-platforms';
-import { v4 as uuid } from 'uuid';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-import axios from 'axios';
-import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
-import { faces } from '@cloudinary/url-gen/qualifiers/focusOn';
 import { PlatformCards } from './PlatformCards';
-
-const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-if (!CLOUD_NAME) throw new Error("'VITE_CLOUDINARY_CLOUD_NAME' env variable is not defined");
-
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: 'shape-snap'
-  },
-  url: {
-    secure: true
-  }
-});
+import { uploadImage } from '../services/upload-image';
+import { mapImageToBanners } from '../utils/mapImageToBanners';
 
 type Props = {
   imageData: ImageData;
@@ -45,58 +28,18 @@ export function TransformImage({ imageData, platformList }: Props) {
     imageData: ImageData;
   };
   const handleTransformImg = async ({ containsFaces, imageData }: HandleTransformImgProps) => {
-    const API_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_API_URL;
+    const response = await uploadImage({
+      imageData,
+      onProgress: (progress) => setUploadProgress(progress)
+    });
 
-    if (!API_URL) {
-      throw new Error("'VITE_CLOUDINARY_UPLOAD_API_URL' env variable is not defined");
-    }
+    if (!response.ok) return;
 
-    const data = new FormData();
-    data.append('file', imageData.src);
-    data.append('upload_preset', 'shape-snap');
+    const { imagePublicID } = response.data;
 
-    try {
-      const response = await axios.post(API_URL, data, {
-        onUploadProgress: (event) => {
-          const progress = (event.loaded / (event.total ?? 0)) * 100;
-          setUploadProgress(progress);
-        }
-      });
+    const transformedImages = mapImageToBanners({ imagePublicID, containsFaces, platformList });
 
-      const uploadedImgPublicID = response?.data?.public_id;
-
-      const transformedImages: TransformedImages[] = platformList.map((platformName) => {
-        const platformId = uuid();
-        const platformBanners = PLATFORM_BANNER_SIZES[platformName].banners;
-        const uploadedImg = cld.image(uploadedImgPublicID);
-
-        const banners = platformBanners.map(({ name, width, height }) => {
-          const initialTransformation = Resize.fill().width(width).height(height);
-
-          const url = containsFaces
-            ? uploadedImg.resize(initialTransformation.gravity(focusOn(faces()))).toURL()
-            : uploadedImg.resize(initialTransformation).toURL();
-
-          return {
-            name,
-            url,
-            width,
-            height,
-            id: uuid()
-          };
-        });
-
-        return {
-          banners,
-          platformName,
-          id: platformId
-        };
-      });
-
-      setTransformedImages(transformedImages);
-    } catch (error) {
-      console.error(error);
-    }
+    setTransformedImages(transformedImages);
   };
 
   const handleDownloadZIPFile = async () => {
