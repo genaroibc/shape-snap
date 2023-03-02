@@ -40,11 +40,11 @@ export function TransformImage({ imageData, platformList }: Props) {
     handleTransformImg({ containsFaces, imageData });
   };
 
-  type HandleTansformImgProps = {
+  type HandleTransformImgProps = {
     containsFaces: boolean;
     imageData: ImageData;
   };
-  const handleTransformImg = async ({ containsFaces, imageData }: HandleTansformImgProps) => {
+  const handleTransformImg = async ({ containsFaces, imageData }: HandleTransformImgProps) => {
     const API_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_API_URL;
 
     if (!API_URL) {
