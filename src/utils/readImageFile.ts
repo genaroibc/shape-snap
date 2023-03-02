@@ -1,6 +1,4 @@
-import { KnownError, KnownResult } from '../types';
-
-type KnownResponse = KnownError | KnownResult<ImageFileData>;
+import { KnownResponse } from '../types';
 
 type ImageFileData = {
   src: string;
@@ -11,7 +9,7 @@ const DEFAULT_ERROR_MSG = 'There was an error reading your image, please try aga
 const FILETYPE_ERROR_MSG = 'Please upload an image file. Supported formats: png, jpeg, jpg, gif and webp';
 const SUPPORTED_IMAGE_FORMATS = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
 
-export async function readImageFile(imageFile: File): Promise<KnownResponse> {
+export async function readImageFile(imageFile: File): Promise<KnownResponse<ImageFileData>> {
   const isSupportedImgFormat = SUPPORTED_IMAGE_FORMATS.includes(imageFile.type);
 
   if (!isSupportedImgFormat) {
@@ -24,7 +22,7 @@ export async function readImageFile(imageFile: File): Promise<KnownResponse> {
   const reader = new FileReader();
   reader.readAsDataURL(imageFile);
 
-  const result: KnownResponse = await new Promise((resolve) => {
+  const result: KnownResponse<ImageFileData> = await new Promise((resolve) => {
     reader.onerror = () => {
       resolve({ ok: false, error: DEFAULT_ERROR_MSG });
     };
