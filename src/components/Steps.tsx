@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PlatformList } from './PlatformList';
 import { UploadZone } from './UploadZone';
-import { ImageData, isPlatformName, PlatformName } from '../types';
+import { ImageData, isPlatformName, PlatformName, TransformedImages } from '../types';
 import { STEP_LIST } from '../constants';
 import { StepsBreadCrumb } from './StepsBreadCrumb';
 import { StepsNavBar } from './StepsNavBar';
@@ -11,6 +11,11 @@ export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlatforms, setSelectedPlatforms] = useState<PlatformName[]>([]);
   const [userImgData, setUserImgData] = useState<ImageData | null>(null);
+  const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(null);
+
+  const handleNewTransformedImages = (images: TransformedImages[] | null) => {
+    setTransformedImages(images);
+  };
 
   const handleSelectionChange = (e: React.ChangeEvent) => {
     const platformInput = e.target as HTMLInputElement;
@@ -41,12 +46,21 @@ export function Steps() {
       <StepsBreadCrumb currentStep={currentStep} />
       <h3 className="text-3xl my-8">{STEP_LIST[currentStep]}</h3>
       <div className="min-h-[450px]">
-        {currentStep === 0 && <UploadZone defaultImgData={userImgData} onNewImgData={handleNewUserImageData} />}
+        {currentStep === 0 && <UploadZone initialImgData={userImgData} onNewImgData={handleNewUserImageData} />}
         {currentStep === 1 && (
           <PlatformList selectedPlatforms={selectedPlatforms} onSelectionChange={handleSelectionChange} />
         )}
         {currentStep === 2 && (
-          <>{userImgData && <TransformImage platformList={selectedPlatforms} imageData={userImgData} />}</>
+          <>
+            {userImgData && (
+              <TransformImage
+                onNewTransformedImages={handleNewTransformedImages}
+                initialTransformedImages={transformedImages}
+                platformList={selectedPlatforms}
+                imageData={userImgData}
+              />
+            )}
+          </>
         )}
       </div>
 

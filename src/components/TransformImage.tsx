@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImageData, PlatformName, TransformedImages } from '../types';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
@@ -9,12 +9,18 @@ import { mapImageToBanners } from '../utils/mapImageToBanners';
 type Props = {
   imageData: ImageData;
   platformList: PlatformName[];
+  onNewTransformedImages: (images: TransformedImages[] | null) => void;
+  initialTransformedImages: TransformedImages[] | null;
 };
 
-export function TransformImage({ imageData, platformList }: Props) {
-  const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(null);
+export function TransformImage({ imageData, platformList, onNewTransformedImages, initialTransformedImages }: Props) {
+  const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(initialTransformedImages);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    onNewTransformedImages(transformedImages);
+  }, [transformedImages]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
