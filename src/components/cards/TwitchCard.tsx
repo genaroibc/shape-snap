@@ -10,8 +10,8 @@ export function TwitchCard({ name, url, height, width }: Props) {
         <img
           className="object-cover"
           src={url}
-          alt={`Pinterest banner in ${name} resolution`}
-          title={`Pinterest banner in ${name} resolution`}
+          alt={`Twitch banner in ${name} resolution`}
+          title={`Twitch banner in ${name} resolution`}
         />
       </figure>
 
@@ -21,8 +21,8 @@ export function TwitchCard({ name, url, height, width }: Props) {
             <img
               className="object-cover aspect-square w-full rounded-full border-[3px] border-white"
               src={url}
-              alt="Pinterest avatar"
-              title="Pinterest avatar"
+              alt="Twitch avatar"
+              title="Twitch avatar"
             />
             <span className="absolute -bottom-2 px-2 border-[3px] left-1/2 -translate-x-1/2 border-white rounded text-white bg-[#eb0400] font-semibold">
               LIVE
