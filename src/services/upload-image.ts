@@ -36,7 +36,6 @@ export async function uploadImage({
 
     return { ok: true, data: { imagePublicID: uploadedImgPublicID } };
   } catch (error) {
-    console.error(error);
     return { ok: false, error: 'There was an error uploading your image, please try again' };
   }
 }
