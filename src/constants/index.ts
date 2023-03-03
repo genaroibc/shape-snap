@@ -28,7 +28,7 @@ export const DEMO_IMAGES_LIST = [
   },
   {
     src: '/assets/demo-images/mountain.webp',
-    alt: 'A ',
+    alt: 'A snowy mountain at sunset',
     id: uuid()
   }
 ];
