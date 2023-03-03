@@ -6,7 +6,7 @@ type Props = {
 
 export function DemoImages({ onSelect }: Props) {
   return (
-    <nav className="flex flex-wrap justify-center gap-4">
+    <nav className="flex flex-wrap justify-center gap-4 max-w-sm">
       {DEMO_IMAGES_LIST.map(({ alt, src, id }) => (
         <button key={id} className="p-0 m-0 w-36 max-w-[150px] rounded" onClick={onSelect}>
           <img
