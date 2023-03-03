@@ -6,11 +6,11 @@ import { UploadedImage } from './UploadedImage';
 
 type Props = {
   onNewImgData: (imageData: ImageData | null) => void;
-  defaultImgData: ImageData | null;
+  initialImgData: ImageData | null;
 };
 
-export function UploadZone({ defaultImgData, onNewImgData }: Props) {
-  const [imgData, setImgData] = useState<ImageData | null>(defaultImgData);
+export function UploadZone({ initialImgData, onNewImgData }: Props) {
+  const [imgData, setImgData] = useState<ImageData | null>(initialImgData);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
