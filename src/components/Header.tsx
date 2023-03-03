@@ -11,13 +11,13 @@ export function Header() {
         <nav className="block">
           <ul className="flex gap-4 w-full self-end">
             <li>
-              <a href="#home" className="font-normal text-gray-800 hover:text-black">
+              <a href="#top" className="font-normal text-gray-800 hover:text-black">
                 Home
               </a>
             </li>
             <li>
-              <a href="#home" className="font-normal text-gray-800 hover:text-black">
-                About
+              <a href="#playground" className="font-normal text-gray-800 hover:text-black">
+                Playground
               </a>
             </li>
             <li>
