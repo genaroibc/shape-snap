@@ -31,9 +31,9 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
     setIsDragging(false);
 
     const draggedData = event.dataTransfer;
-    const imageFiles = draggedData.files;
+    const imageFile = draggedData.files[0];
 
-    handleReadImgFiles(imageFiles);
+    handleReadImgFiles(imageFile);
   };
 
   const handleInputFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,19 +42,17 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
 
     if (!imageFiles) return setError('No images found, please try again');
 
-    handleReadImgFiles(imageFiles);
+    handleReadImgFiles(imageFiles[0]);
   };
 
-  const handleReadImgFiles = (imageFiles: FileList) => {
-    if (!imageFiles.length) return setError('No images found, please try again');
+  const handleReadImgFiles = (imageFile: File) => {
+    if (!imageFile) return setError('No images found, please try again');
 
-    Array.from(imageFiles).forEach((imgFile) => {
-      readImageFile(imgFile).then((result) => {
-        if (!result.ok) return setError(result.error);
+    readImageFile(imageFile).then((result) => {
+      if (!result.ok) return setError(result.error);
 
-        setImgData(result.data);
-        setError(null);
-      });
+      setImgData(result.data);
+      setError(null);
     });
   };
 
@@ -65,12 +63,24 @@ export function UploadZone({ defaultImgData, onNewImgData }: Props) {
     setIsDragging(isDragging);
   };
 
-  const handleSelectImage = (e: React.MouseEvent) => {
+  const handleSelectImage = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const eventTarget = e.target as HTMLImageElement;
-    setImgData({ src: eventTarget.src, title: eventTarget.alt });
+    const { src: imageSrc, alt: imageTitle } = e.target as HTMLImageElement;
+    const imageExtension = imageSrc.split('.').at(-1);
+
+    if (!imageExtension) return setError('No image found. Please try again');
+
+    try {
+      const response = await fetch(imageSrc);
+      const imageBlob = await response.blob();
+
+      const imageFile = new File([imageBlob], imageTitle, { type: `image/${imageExtension}` });
+      handleReadImgFiles(imageFile);
+    } catch (error) {
+      setError('There was an error reading the image. Please try again');
+    }
   };
 
   return (
