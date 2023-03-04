@@ -96,7 +96,6 @@ export function TransformImage({ imageData, platformList, onNewTransformedImages
         <button className="max-w-fit mx-auto">Generate images</button>
       </form>
 
-      <h4 className="text-center text-5xl">Banners Preview</h4>
       {transformedImages && <PlatformCards cards={transformedImages} />}
 
       {error && <p>{error}</p>}
