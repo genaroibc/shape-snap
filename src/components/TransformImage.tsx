@@ -64,7 +64,9 @@ export function TransformImage({ imageData, platformList, onNewTransformedImages
         const imageResponse = await fetch(platformBanner.url);
         const imageBlob = await imageResponse.blob();
 
-        const fileName = `${platformBanner.name}-banner.jpeg`;
+        const imageExtension = imageBlob.type.split('/')[1];
+        const fileName = `${platformBanner.name}-banner.${imageExtension}`;
+
         zip.file(fileName, imageBlob, { binary: true });
       });
 
@@ -94,7 +96,9 @@ export function TransformImage({ imageData, platformList, onNewTransformedImages
 
       {error && <p>{error}</p>}
 
-      {uploadProgress && !transformedImages && <progress className="w-full" max={100} value={uploadProgress} />}
+      {uploadProgress && !transformedImages && (
+        <progress className="w-full max-w-sm bg-red-500 p-4" max={100} value={uploadProgress} />
+      )}
 
       {transformedImages && (
         <button className="max-w-fit flex gap-2 items-center justify-center mx-auto" onClick={handleDownloadZIPFile}>
