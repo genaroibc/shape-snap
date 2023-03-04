@@ -8,7 +8,7 @@ export function TwitterCard({ url, height, width }: Props) {
     <CardLayout {...{ height, width }}>
       <figure className="flex flex-col gap-4 bg-white relative">
         <img
-          className="object-cover aspect-square w-1/5 rounded-full absolute right-[77%] bottom-0 translate-y-1/2 border-[3px] md:border-[5px] border-white"
+          className="object-cover aspect-square w-[18%] rounded-full absolute right-[80%] bottom-0 translate-y-1/2 border-[3px] md:border-[5px] border-white"
           src={url}
           alt="Twitter avatar"
           title="Twitter avatar"
@@ -40,7 +40,7 @@ export function TwitterCard({ url, height, width }: Props) {
         </span>
       </nav>
 
-      <div className="text-left ml-12 mt-10">
+      <div className="text-left ml-7 mt-10">
         <div className="flex gap-1 text-3xl font-semibold">
           Twitter
           <svg viewBox="0 0 22 22" width="28" height="28">

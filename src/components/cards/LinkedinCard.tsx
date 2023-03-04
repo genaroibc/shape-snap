@@ -17,7 +17,7 @@ export function LinkedinCard({ url, height, width }: Props) {
       </figure>
       <div className="grid grid-cols-2 gap-4 text-left max-w-[80%] ml-16">
         <div className="flex flex-col gap-4">
-          <span className="text-4xl font-semibold">LinkedIn Profile</span>
+          <span className="text-4xl font-semibold">LinkedIn</span>
           <span className="text-2xl font-normal">LinkedIn profile description</span>
         </div>
         <div className="flex items-end flex-col gap-4">
@@ -27,7 +27,7 @@ export function LinkedinCard({ url, height, width }: Props) {
           </div>
           <div className="flex gap-4 items-center w-1/2">
             <img src="/assets/logo/favicon.ico" alt="" width="40" height="40" />
-            <span className="font-semibold">School</span>
+            <span className="font-semibold">Education</span>
           </div>
         </div>
       </div>
