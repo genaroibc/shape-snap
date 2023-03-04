@@ -3,6 +3,7 @@ import { LinkedinCard } from './cards/LinkedinCard';
 import { PinterestCard } from './cards/PinterestCard';
 import { TwitchCard } from './cards/TwitchCard';
 import { TransformedImages } from '../types';
+import { YouTubeCard } from './cards/YouTubeCard';
 
 type Props = {
   cards: TransformedImages[];
@@ -23,6 +24,8 @@ export function PlatformCards({ cards }: Props) {
               <PinterestCard {...{ ...banners[0], id }} />
             ) : platformName === 'twitch' ? (
               <TwitchCard {...{ ...banners[0], id }} />
+            ) : platformName === 'youtube' ? (
+              <YouTubeCard {...{ ...banners[0], id }} />
             ) : (
               <p>Nothing to render</p>
             )}
