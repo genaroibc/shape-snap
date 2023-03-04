@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PlatformList } from './PlatformList';
 import { UploadZone } from './UploadZone';
-import { ImageData, isPlatformName, PlatformName, TransformedImages } from '../types';
+import { ImageData, isPlatformName, PlatformName, TransformedImage } from '../types';
 import { STEP_LIST } from '../constants';
 import { StepsBreadCrumb } from './StepsBreadCrumb';
 import { StepsNavBar } from './StepsNavBar';
@@ -11,9 +11,9 @@ export function Steps() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlatforms, setSelectedPlatforms] = useState<PlatformName[]>([]);
   const [userImgData, setUserImgData] = useState<ImageData | null>(null);
-  const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(null);
+  const [transformedImages, setTransformedImages] = useState<TransformedImage[] | null>(null);
 
-  const handleNewTransformedImages = (images: TransformedImages[] | null) => {
+  const handleNewTransformedImages = (images: TransformedImage[] | null) => {
     setTransformedImages(images);
   };
 

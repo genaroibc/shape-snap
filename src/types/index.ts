@@ -18,7 +18,7 @@ export type PlatformBannerSize = {
 };
 
 export type PlatformItem = { name: PlatformName; iconSrc: string };
-export type PlatformBanners = Record<PlatformName, { banners: Array<{ name: string; width: number; height: number }> }>;
+export type PlatformBanners = Record<PlatformName, PlatformBannerSize>;
 
 // to generate dynamic types, making easier adding or removing a platform
 // only needing to modify this object
@@ -37,10 +37,10 @@ export function isPlatformName(data: unknown): data is PlatformName {
   return typeof data === 'string' && Object.keys(_PLATFORM_NAMES_DICTIONARY).includes(data);
 }
 
-export type TransformedImageBanner = { name: string; url: string; id: string; width: number; height: number };
+export type TransformedImageBanner = { url: string; id: string; width: number; height: number };
 
-export type TransformedImages = {
+export type TransformedImage = {
   id: string;
   platformName: string;
-  banners: TransformedImageBanner[];
+  banner: TransformedImageBanner;
 };

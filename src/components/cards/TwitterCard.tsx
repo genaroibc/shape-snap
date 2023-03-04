@@ -3,9 +3,9 @@ import { CardLayout } from './CardLayout';
 
 type Props = TransformedImageBanner;
 
-export function TwitterCard({ name, url, height, width }: Props) {
+export function TwitterCard({ url, height, width }: Props) {
   return (
-    <CardLayout {...{ height, width, name }}>
+    <CardLayout {...{ height, width }}>
       <figure className="flex flex-col gap-4 bg-white relative">
         <img
           className="object-cover aspect-square w-1/5 rounded-full absolute right-3/4 bottom-0 translate-y-1/2 border-[3px] md:border-[5px] border-white"
@@ -13,12 +13,7 @@ export function TwitterCard({ name, url, height, width }: Props) {
           alt="Twitter avatar"
           title="Twitter avatar"
         />
-        <img
-          className="object-cover"
-          src={url}
-          alt={`Twitter banner in ${name} resolution`}
-          title={`Twitter banner in ${name} resolution`}
-        />
+        <img className="object-cover" src={url} alt={`Twitter banner`} title={`Twitter banner`} />
       </figure>
 
       <nav className="flex flex-col items-start sm:flex-row sm:items-center gap-4 pt-16 sm:pt-0 w-full justify-end px-6">

@@ -3,16 +3,11 @@ import { CardLayout } from './CardLayout';
 
 type Props = TransformedImageBanner;
 
-export function YouTubeCard({ name, url, height, width }: Props) {
+export function YouTubeCard({ url, height, width }: Props) {
   return (
-    <CardLayout {...{ height, width, name }}>
+    <CardLayout {...{ height, width }}>
       <figure className="flex flex-col gap-4">
-        <img
-          className="object-cover"
-          src={url}
-          alt={`YouTube banner in ${name} resolution`}
-          title={`YouTube banner in ${name} resolution`}
-        />
+        <img className="object-cover" src={url} alt={`YouTube banner`} title={`YouTube banner`} />
       </figure>
 
       <nav className="w-10/12 m-auto flex gap-4 items-center justify-between">

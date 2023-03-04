@@ -3,16 +3,11 @@ import { CardLayout } from './CardLayout';
 
 type Props = TransformedImageBanner;
 
-export function TwitchCard({ name, url, height, width }: Props) {
+export function TwitchCard({ url, height, width }: Props) {
   return (
-    <CardLayout {...{ height, width, name }}>
+    <CardLayout {...{ height, width }}>
       <figure className="flex flex-col gap-4 bg-white">
-        <img
-          className="object-cover"
-          src={url}
-          alt={`Twitch banner in ${name} resolution`}
-          title={`Twitch banner in ${name} resolution`}
-        />
+        <img className="object-cover" src={url} alt={`Twitch banner`} title={`Twitch banner`} />
       </figure>
 
       <nav className="w-11/12 m-auto flex gap-4 items-center justify-between">

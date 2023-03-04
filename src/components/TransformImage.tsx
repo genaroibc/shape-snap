@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ImageData, PlatformName, TransformedImages } from '../types';
+import { ImageData, PlatformName, TransformedImage } from '../types';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { PlatformCards } from './PlatformCards';
@@ -9,12 +9,12 @@ import { mapImageToBanners } from '../utils/mapImageToBanners';
 type Props = {
   imageData: ImageData;
   platformList: PlatformName[];
-  onNewTransformedImages: (images: TransformedImages[] | null) => void;
-  initialTransformedImages: TransformedImages[] | null;
+  onNewTransformedImages: (images: TransformedImage[] | null) => void;
+  initialTransformedImages: TransformedImage[] | null;
 };
 
 export function TransformImage({ imageData, platformList, onNewTransformedImages, initialTransformedImages }: Props) {
-  const [transformedImages, setTransformedImages] = useState<TransformedImages[] | null>(initialTransformedImages);
+  const [transformedImages, setTransformedImages] = useState<TransformedImage[] | null>(initialTransformedImages);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,8 +52,8 @@ export function TransformImage({ imageData, platformList, onNewTransformedImages
   const handleDownloadZIPFile = async () => {
     if (!transformedImages) return;
 
-    const bannersData = transformedImages.map(({ banners, platformName }) => ({
-      url: banners[0].url,
+    const bannersData = transformedImages.map(({ banner, platformName }) => ({
+      url: banner.url,
       name: platformName
     }));
 
