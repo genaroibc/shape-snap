@@ -19,7 +19,7 @@ export function TwitchCard({ name, url, height, width }: Props) {
         <div className="flex justify-start items-center gap-4">
           <div className="relative inline w-2/12 border-[3px] border-black rounded-full">
             <img
-              className="object-cover aspect-square w-full rounded-full border-[3px] border-white"
+              className="object-cover aspect-square w-full rounded-full border-[3px] border-white max-w-lg"
               src={url}
               alt="Twitch avatar"
               title="Twitch avatar"
