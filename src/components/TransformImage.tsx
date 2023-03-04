@@ -82,8 +82,11 @@ export function TransformImage({ imageData, platformList, onNewTransformedImages
 
   return (
     <section className="w-full flex flex-col gap-4 md:p-4">
-      <form onSubmit={handleSubmit} className="flex max-w-lg mx-auto flex-col gap-4 md:p-4 justify-center items-center">
-        <img src={imageData.src} alt={imageData.title} />
+      <form
+        onSubmit={handleSubmit}
+        className="shadow-2xl border-[1px] border-gray-200 mb-12 rounded flex max-w-lg mx-auto flex-col gap-4 md:p-4 justify-center items-center"
+      >
+        <img className="rounded" src={imageData.src} alt={imageData.title} />
 
         <div className="text-xl">
           <label htmlFor="containsFaces">Contains faces</label>
@@ -93,12 +96,16 @@ export function TransformImage({ imageData, platformList, onNewTransformedImages
         <button className="max-w-fit mx-auto">Generate images</button>
       </form>
 
+      <h4 className="text-center text-5xl">Banners Preview</h4>
       {transformedImages && <PlatformCards cards={transformedImages} />}
 
       {error && <p>{error}</p>}
 
       {uploadProgress && !transformedImages && (
-        <progress className="w-full max-w-sm bg-red-500 p-4" max={100} value={uploadProgress} />
+        <>
+          <p>Uploading images...</p>
+          <progress className="w-full max-w-sm mx-auto  " max={100} value={uploadProgress ?? 50} />
+        </>
       )}
 
       {transformedImages && <DownloadBannersButton handleDownload={handleDownloadZIPFile} />}
