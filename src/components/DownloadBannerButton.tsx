@@ -60,7 +60,7 @@ export function DownloadBannersButton({ handleDownload }: Props) {
   }, [makeConfettiShot]);
 
   return (
-    <nav>
+    <nav className="sticky bottom-32">
       <button className="max-w-fit flex gap-2 items-center justify-center mx-auto" onClick={handleDownloadButtonClick}>
         Download banners
         <svg className="w-8 max-w-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
